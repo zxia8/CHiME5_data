@@ -142,11 +142,10 @@ if __name__ == '__main__':
     # audiodir = 'audio'
     # wav_file_output_dir = '.'
 
-    trans_dir = sys.argv[1]
-    script_base_dir = sys.argv[2]
-    output_path = sys.argv[3]
-    audiodir = sys.argv[4]
-    wav_file_output_dir = sys.argv[5]
+    trans_dir = '/fastdata/acs18zx/CHiME5/transcription'
+    script_base_dir = 'scripts'
+    audiodir = '/fastdata/acs18zx/CHiME5/audio'
+    wav_file_output_dir = '/fastdata/acs18zx/CHiME5/data_chunk'
 
     f_list = read_font("transcriptions")
     if not os.path.exists(script_base_dir):
