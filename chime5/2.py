@@ -16,7 +16,7 @@ def file_path_f(rootDir):
             dict_single_folder = {}
             folder_n = root_folder.split("/")[1]
             for f in folder:
-                dict_single_folder[f] = f[:7]
+                dict_single_folder[f] = f[:3]
             file_path[folder_n] = dict_single_folder
     return file_path
 
@@ -29,7 +29,7 @@ f = file_path_f('audio')
 a = []
 
 for key in f:
-    key_v = get_key(f[key], 'S02_P05')
+    key_v = get_key(f[key], 'S02')
     if len(key_v):
         a.append(key_v)
 pprint(a[0])

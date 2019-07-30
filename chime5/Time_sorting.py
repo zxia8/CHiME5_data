@@ -35,7 +35,7 @@ def file_path_f(rootDir):
             dict_single_folder = {}
             folder_n = root_folder.split("/")[1]
             for f in folder:
-                dict_single_folder[f] = f[0]+f[1]+f[2]
+                dict_single_folder[f] = f[:3]
             file_path[folder_n] = dict_single_folder
     return file_path
 
@@ -86,14 +86,14 @@ def get_blank_time(speak_time):
 
 # write sox command into bash script
 def write_command_bash(filename, blank_time_zone):
-    path_f = file_path_f('audio/dev')
+    path_f = file_path_f('audio')
     logging.debug('writing lines to bash script {}......'.format(filename))
     with open(filename, 'w') as fp:
         fp.write('#!/bin/bash\n')
         commands = [
-            'sox {} output trim {} {}\n'.format(path_f_c, blank_zone[0], blank_zone[1])
+            'sox {} {} trim {} {}\n'.format(path_f_i, path_f_o, blank_zone[0], blank_zone[1])
             for blank_zone in blank_time_zone
-            for path_f_c in path_f
+            for path_f_i in path_f
         ]
         fp.writelines(commands)
     logging.debug('writing script done!')
