@@ -9,6 +9,7 @@
 import json
 import os
 import logging
+import re
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
@@ -33,7 +34,7 @@ def file_path_f(rootDir):
     for root_folder, dirs_folder, folder in os.walk(rootDir):
         if root_folder != rootDir:
             dict_single_folder = {}
-            folder_n = root_folder.split("/")[1]
+            folder_n = re.sub('\W', ' ', root_folder).split(' ')[1]
             for f in folder:
                 dict_single_folder[f] = f[:3]
             file_path[folder_n] = dict_single_folder
@@ -91,7 +92,7 @@ def write_command_bash(filename, blank_time_zone):
     with open(filename, 'w') as fp:
         fp.write('#!/bin/bash\n')
         commands = [
-            'sox {} {} trim {} {}\n'.format(path_f_i, path_f_o, blank_zone[0], blank_zone[1])
+            'sox {} output trim {} {}\n'.format(path_f_i, blank_zone[0], blank_zone[1])
             for blank_zone in blank_time_zone
             for path_f_i in path_f
         ]
