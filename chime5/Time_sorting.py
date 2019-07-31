@@ -116,10 +116,14 @@ def write_command_bash(sh_name, wav_file_list, input_path, ultimate, wav_out_dir
     with open(sh_name, 'w') as fp:
         fp.write('#!/bin/bash\n')
         for i in range(len(wav_file_list)):
+            if not os.path.exists(str(wav_out_dir) + '/' + wav_file_list[i]):
+                os.mkdir(str(wav_out_dir) + '/' + wav_file_list[i])
             for j in range(len(ultimate)):
+                if not os.path.exists(str(wav_out_dir) + '/' + wav_file_list[i] + '/' + ultimate[j][0]):
+                    os.mkdir(str(wav_out_dir) + '/' + wav_file_list[i] + '/' + ultimate[j][0])
                 commands = [
                     'sox {0} {1} trim {2} {3}\n'.format(input_path + '/' + wav_file_list[i] + '.wav',
-                                                        wav_out_dir + '/' + wav_file_list[i] + ultimate[j][0] + str(j) + '.wav',
+                                                        wav_out_dir + '/' + wav_file_list[i] + '/' + ultimate[j][0] + '/' + wav_file_list[i] + ultimate[j][0] + str(j) + '.wav',
                                                         ultimate[j][2][0], ultimate[j][2][1])
                 ]
                 fp.writelines(commands)
@@ -142,10 +146,14 @@ if __name__ == '__main__':
     # audiodir = 'audio'
     # wav_file_output_dir = '.'
 
-    trans_dir = '/fastdata/acs18zx/CHiME5/transcription'
-    script_base_dir = 'scripts'
-    audiodir = '/fastdata/acs18zx/CHiME5/audio'
-    wav_file_output_dir = '/fastdata/acs18zx/CHiME5/data_chunk'
+    # trans_dir = '/fastdata/acs18zx/CHiME5/transcription'
+    # script_base_dir = 'scripts'
+    # audiodir = '/fastdata/acs18zx/CHiME5/audio'
+    # wav_file_output_dir = '/fastdata/acs18zx/CHiME5/data_chunk'
+    trans_dir = '/fastdata/acr18jw/CHiME5/CHiME5/transcriptions'
+    script_base_dir = '/fastdata/acr18jw/CHiME5/CHiME5/scripts'
+    audiodir = '/fastdata/acr18jw/CHiME5/CHiME5/audio'
+    wav_file_output_dir = '/fastdata/acr18jw/CHiME5/CHiME5/audio_chunks'
 
     f_list = read_font("transcriptions")
     if not os.path.exists(script_base_dir):
@@ -155,6 +163,8 @@ if __name__ == '__main__':
         # Create a subdirectory
         if not os.path.exists(script_base_dir + os.path.sep + dirname):
             os.mkdir(script_base_dir + os.path.sep + dirname)
+        if not os.path.exists(wav_file_output_dir + os.path.sep + dirname):
+            os.mkdir(wav_file_output_dir + os.path.sep + dirname)
         for filename in f_list[dirname].keys():
             # get script file name
             S_xx = os.path.splitext(filename)[0]
@@ -205,7 +215,8 @@ if __name__ == '__main__':
 
             real_ultimate_list = guided_sort(sorting_index, ultimate_list)
             # pprint(real_ultimate_list)
-
-            write_command_bash(script_filepath, naming(S_xx), audiodir + '/' + dirname, real_ultimate_list, wav_file_output_dir)
+            if not os.path.exists(wav_file_output_dir + os.path.sep + dirname + os.path.sep + str(S_xx)):
+                os.mkdir(wav_file_output_dir + os.path.sep + dirname + os.path.sep + str(S_xx))
+            write_command_bash(script_filepath, naming(S_xx), audiodir + '/' + dirname, real_ultimate_list, wav_file_output_dir + os.path.sep + dirname + os.path.sep + str(S_xx))
 
 
